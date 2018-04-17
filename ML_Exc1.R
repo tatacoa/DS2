@@ -45,4 +45,10 @@ library(mdsr)
 names(WorldCities)
 dim(WorldCities)
 
+BigCities<-filter(WorldCities,population >= 100000)
+BigCities<-select(BigCities,longitude, latitude)
+
+set.seed(15)
+city.km<-kmeans(BigCities,centers = 6)
+with(BigCities,plot(longitude,latitude,col=city.km$cluster,pch=16,cex=0.6))
 
