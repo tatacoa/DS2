@@ -1,4 +1,5 @@
 # Workshop 1 ML
+# K-Means
 
 set.seed(2)
 x=matrix(rnorm(50*2),ncol=2)
