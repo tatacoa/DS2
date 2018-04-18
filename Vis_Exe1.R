@@ -1,4 +1,5 @@
-# Excersice 1  Data Visualization
+# Ana Maria Sandoval Jimenez
+# Data Visualization Exercise 1
 # PCA
 
 library(stats)
