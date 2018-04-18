@@ -1,5 +1,5 @@
 # Ana Maria Sandoval
-# Machine Learning Exc 2
+# Machine Learning Exercise 2
 # Higher Dimensional K-means, PCA
 
 install.packages("rgl")
