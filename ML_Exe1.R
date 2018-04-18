@@ -1,5 +1,6 @@
-# Workshop 1 ML
-# K-Means
+# Ana Maria Sandoval
+# Machine Learning Exercise 1
+# Higher Dimensional K-means, PCA
 
 set.seed(2)
 x=matrix(rnorm(50*2),ncol=2)
