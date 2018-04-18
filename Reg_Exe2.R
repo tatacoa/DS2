@@ -1,3 +1,6 @@
+# Ana Maria Sandoval
+# Regression Exercise 2
+
 data <- read.csv2('Marketing.csv')
 
 Sales <- c(1585, 1819, 1647, 1496, 921, 1278, 1810, 1987, 1612, 1413)
