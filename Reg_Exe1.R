@@ -1,4 +1,7 @@
-# Exercise 1 Regresion
+# Ana Maria Sandoval
+# Regression Exercise 1
+
+
 
 # exc 5
 speed = c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70)
