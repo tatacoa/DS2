@@ -1,5 +1,6 @@
 # Ana Maria Sandoval
 # Regression Exercise 2
+# More Linear Models
 
 data <- read.csv2('Marketing.csv')
 
@@ -42,7 +43,7 @@ my.lin.reg <- function(x, y) {
   lm.obj <- lm(y ~ x)
   
   abline(lm.obj)
-
+  
   intercept <- as.numeric(lm.obj$coefficients[1])
   gradient <- as.numeric(lm.obj$coefficients[2])
   
@@ -53,3 +54,18 @@ my.lin.reg <- function(x, y) {
 }
 
 my.lin.reg(Price, Sales)
+
+# Exe 2 Recall the estimates in simple linear regression
+
+data = read.csv2("/Users/tatacoa/Downloads/Miete2003.csv")
+summary(data)
+
+# Write your own R function simple.lm, that calculates these coefficients and returns
+# the vector
+
+# Apply simple.lm to Miete2003 data
+
+# Add the calculation of R2 to your simple.lm function
+
+# Compare your results with lm function
+
