@@ -107,21 +107,52 @@ km.out4 <-kmeans(pr.out$x[,1:2],centers=4,nstart=20)
 plot(pr.out$x[,1:2],type="n")
 text(pr.out$x[,1],pr.out$x[,2],labels=state.abb,col=km.out4$cluster)
 
+# Exercise 3: Hamburg decathlon data, PCA and clustering
+decathlon <- read.csv2("/Users/tata/Downloads/Zehnkampf2017Hamburg.csv",
+                       stringsAsFactors = FALSE, fileEncoding = "ISO-8859-1", header = TRUE, sep = ";")[-c(1:3,seq(10,28,2))]
 
 
+## transform times to seconds
+hilf <- decathlon$Zeit.400m
+decathlon$Zeit.400m <- 60*as.numeric(substr(hilf,1,2)) +
+  as.numeric(gsub(",",".",substr(hilf,4,nchar(hilf))))
+hilf <- decathlon$Zeit.1500m
+decathlon$Zeit.1500m <- 60*as.numeric(substr(hilf,1,2)) +
+  as.numeric(gsub(",",".",substr(hilf,4,nchar(hilf))))
+colnames(decathlon) <- c("YearOfBirth", "Class", "Points",
+                         "Day1", "Day2", "Time.100m", "LongJump", "ShotPut",
+                         "HighJump", "Time.400m", "Hurdles", "Discus", "PoleVault",
+                         "JavelinThrow", "Time.1500m")
+#remove any competitors without complete data, and select just the event results
+temp <- apply(decathlon,1,function(x) sum(is.na(x)))
+clustermat<-decathlon[temp==0,6:15]
+pairs(clustermat)
+
+# Which combination of disciplines have a large positive or large negative correlation, and is this what you would expect?
+# Positive:Long and HighJump, Discus and Javelinthrow 
+# Negative: 100m and Javelinthrow
+
+# Use prcomp to get the principal components for this dataset and plot the first two using biplot. 
+# What characteristic is clear to see in the first principal component (x-axis)? 
+# Can you suggest a characteristic to summarise the second PC? Note also that there are 4 clear outliers
+
+pr.clustermat <- prcomp(clustermat, scale = TRUE); pr.clustermat
+summary(pr.clustermat)
+plot(pr.clustermat$sdev^2, type = "b")
+abline(h=1)
+
+#biplot
+biplot(pr.clustermat)
+plot3d(pr.clustermat)
 
 
+# Create a cumulative variance plot for the principal components. 
+# 3 PCs is probably a good choice
+summary(pr.clustermat)
+plot(pr.clustermat$sdev^2, type = "b")
+abline(h=1)
 
-
-
-
-
-
-prcomp(~ Murder + Assault + Rape, data = USArrests, scale = TRUE)
-plot(prcomp(USArrests))
-summary(prcomp(USArrests, scale = TRUE))
-biplot(prcomp(USArrests, scale = TRUE))
-
-
-
-#
+# carry out a k-means cluster analysis on these data
+km.clustermat<-kmeans(pr.clustermat$x,centers=3,nstart=20)
+plot(pr.clustermat$x[,1:2],type="n")
+text(pr.clustermat$x[,1],pr.clustermat$x[,2],col=km.clustermat$cluster)

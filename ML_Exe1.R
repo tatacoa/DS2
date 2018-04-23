@@ -54,3 +54,4 @@ set.seed(15)
 city.km<-kmeans(BigCities,centers = 6)
 with(BigCities,plot(longitude,latitude,col=city.km$cluster,pch=16,cex=0.6))
 
+# fin
