@@ -1,3 +1,4 @@
+
 # Ana Maria Sandoval
 # Machine Learning Exercise 3
 # Robust Clustering with PAM, Hierarchical Clustering
@@ -54,13 +55,13 @@ table(km.out$cluster,pam.out$clustering)
 km.out$cluster == pam.out$clustering
 
 # silhouette using kmeans as input
-sp<-silhouette(km.out$cluster, dist(scale(USArrests))) # dont forget scale
+sp<-silhouette(km.out$cluster, dist(scale(USArrests))) # dont forget to scale
 plot(sp,col=1:2)
 
 # 2 Carry out a similar analysis to Exercise 1 using PAM to see if outliers were influencing the results. 
 # Hint: in clustplot use labels=0 as the row names are the row numbers which are not informative.
 
-decathlon <- read.csv2("/Users/tata/Downloads/Zehnkampf2017Hamburg.csv",
+decathlon <- read.csv2("Zehnkampf2017Hamburg.csv",
                        stringsAsFactors = FALSE, fileEncoding = "ISO-8859-1", header = TRUE, sep = ";")[-c(1:3,seq(10,28,2))]
 
 # transform times to seconds
@@ -86,8 +87,8 @@ clusplot(pam.out,labels=0)
 
 # Rerun the PAM algorithm with the optimal number of clusters
 sp<-silhouette(pam.out)
-plot(sp,col=1:2)
-abline(v=mean(sp[,"sil_width"])) # hay varios valores negativos en el Silhouet
+plot(sp,col=1:3)
+abline(v=mean(sp[,"sil_width"])) # hay varios valores negativos en el Silhouette
 
 # The mean silhouette width can be used to assess which is the best number of clusters
 avesw.vec<-rep(NA,7)
@@ -96,6 +97,27 @@ for(i in 2:7)
 plot(1:7,avesw.vec,type="b",ylim=c(0,0.6))
 avesw.vec # cual tiene el largest mean silhouette width? todas son muy malas menos de 0.4
 
+#### repeat the same as above but using pr.comp first
+
+# PAM applyied to Decathlon data
+clustermat_scaled <- scale(clustermat); clustermat_scaled
+pr.out <- prcomp(clustermat_scaled); pr.out
+pam.out<-pam(pr.out$x , k=3)
+clusplot(pam.out,labels=0)
+
+# Rerun the PAM algorithm with the optimal number of clusters
+sp<-silhouette(pam.out)
+plot(sp,col=1:3)
+abline(v=mean(sp[,"sil_width"])) # hay varios valores negativos en el Silhouette
+
+# The mean silhouette width can be used to assess which is the best number of clusters
+avesw.vec<-rep(NA,7)
+for(i in 2:7)
+  avesw.vec[i]<-mean(silhouette(pam(pr.out$x[,1:2] ,k=i))[,"sil_width"])
+plot(1:7,avesw.vec,type="b",ylim=c(0,0.6))
+avesw.vec # cual tiene el largest mean silhouette width? todas son muy malas menos de 0.4
+
+# pr.out$x[,1:2] this takes the values for the first two principßal components
 
 
 #### con y sin escalar cual es el mejor???? always scale before!!!
@@ -223,4 +245,7 @@ dat <- cbind(Element, X1, X2); dat
 round(x, digits = 0)
 
 round(dist(dat), digits = 1)
+
+
+
 
