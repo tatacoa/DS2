@@ -11,7 +11,7 @@ update.packages()
 library(ISLR)
 
 
-# 1. PAM Clustering
+y# 1. PAM Clustering
 
 help(USArrests)
 summary(USArrests)
@@ -49,7 +49,7 @@ abline(v=mean(sp[,"sil_width"]))
 
 
 # Compare the optimal PAM clustering with the K-Means result
-km.out<-kmeans(USArrests,centers=2,nstart=20); km.out # se debe hacer antes prcomp?
+km.out<-kmeans(scale(USArrests),centers=2,nstart=20); km.out # se debe hacer antes prcomp?
 table(km.out$cluster,pam.out$clustering)
 km.out$cluster == pam.out$clustering
 
@@ -99,7 +99,8 @@ avesw.vec # cual tiene el largest mean silhouette width? todas son muy malas men
 
 
 #### con y sin escalar cual es el mejor????
-
+# is recomended to scale the data before
+# pr.comp is used if the data has more than 4 dimensions
 
 
 # PAM applyied to Decathlon data
@@ -134,15 +135,15 @@ table(nci.labs)
 pr.out=prcomp(nci.data, scale=TRUE)
 
 Cols=function(vec){
-   cols=rainbow(length(unique(vec)))
-   return(cols[as.numeric(as.factor(vec))]) }
+  cols=rainbow(length(unique(vec)))
+  return(cols[as.numeric(as.factor(vec))]) }
 
 # plot the principal component score vectors
 par(mfrow=c(1,2))
 plot(pr.out$x[,1:2], col=Cols(nci.labs), pch=19,
-       xlab="Z1",ylab="Z2")
+     xlab="Z1",ylab="Z2")
 plot(pr.out$x[,c(1,3)], col=Cols(nci.labs), pch=19,
-       xlab="Z1",ylab="Z3")
+     xlab="Z1",ylab="Z3")
 
 # We can obtain a summary of the proportion of variance explained (PVE) of the first few principal 
 # components using the summary() method for a prcomp object
@@ -151,16 +152,16 @@ summary(pr.out)
 
 # plot the variance explained by the first few principal components
 plot(pr.out) # Note that the height of each bar in the bar plot is given by squaring the corresponding 
-             # element of pr.out$sdev
+# element of pr.out$sdev
 
 # PVE of each principal component and PVE of each principal component as a scree plot is more informative
 
 pve=100*pr.out$sdev^2/sum(pr.out$sdev^2)
 par(mfrow=c(1,2))
 plot(pve, type="o", ylab="PVE", xlab="Principal Component",
-       col =" blue ")
+     col =" blue ")
 plot(cumsum(pve), type="o", ylab="Cumulative PVE", xlab="
-       Principal Component ", col =" brown3 ")
+     Principal Component ", col =" brown3 ")
 
 # PVE can also be computed like this: 
 summary(pr.out)$importance[2,]
@@ -176,11 +177,11 @@ sd.data=scale(nci.data)
 par(mfrow=c(3,1))
 data.dist=dist(sd.data) ; data.dist
 plot(hclust(data.dist), labels=nci.labs, main="Complete
-       Linkage", xlab="", sub="",ylab="")
+     Linkage", xlab="", sub="",ylab="")
 plot(hclust(data.dist, method="average"), labels=nci.labs,
-       main="Average Linkage", xlab="", sub="",ylab="")
+     main="Average Linkage", xlab="", sub="",ylab="")
 plot(hclust(data.dist, method="single"), labels=nci.labs,
-       main="Single Linkage", xlab="", sub="",ylab="")
+     main="Single Linkage", xlab="", sub="",ylab="")
 
 # use complete linkage hierarchical cluster- ing for the analysis
 # cut the dendrogram at the height that will yield a particular number of clusters
@@ -208,7 +209,7 @@ table(km.clusters ,hc.clusters ) # the results are very different for PAM vs Kme
 
 hc.out=hclust(dist(pr.out$x[,1:5]))
 plot(hc.out, labels=nci.labs, main="Hier. Clust. on First
-       Five Score Vectors ")
+     Five Score Vectors ")
 table(cutree(hc.out,4), nci.labs)
 
 
@@ -222,5 +223,4 @@ dat <- cbind(Element, X1, X2); dat
 round(x, digits = 0)
 
 round(dist(dat), digits = 1)
-
 
