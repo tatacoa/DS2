@@ -11,7 +11,7 @@ update.packages()
 library(ISLR)
 
 
-y# 1. PAM Clustering
+# 1. PAM Clustering
 
 help(USArrests)
 summary(USArrests)
@@ -41,7 +41,7 @@ plot(1:7,avesw.vec,type="b",ylim=c(0,0.6))
 avesw.vec # cual tiene el largest mean silhouette width? 2???
 
 # Rerun the PAM algorithm with the optimal number of clusters
-pam.out<-pam(USArrests,k=2); pam.out
+pam.out<-pam(scale(USArrests),k=2); pam.out
 clusplot(pam.out,labels=3)
 sp<-silhouette(pam.out)
 plot(sp,col=1:2)
@@ -49,12 +49,12 @@ abline(v=mean(sp[,"sil_width"]))
 
 
 # Compare the optimal PAM clustering with the K-Means result
-km.out<-kmeans(scale(USArrests),centers=2,nstart=20); km.out # se debe hacer antes prcomp?
+km.out<-kmeans(scale(USArrests),centers=2,nstart=20); km.out # se debe hacer antes prcomp? no
 table(km.out$cluster,pam.out$clustering)
 km.out$cluster == pam.out$clustering
 
 # silhouette using kmeans as input
-sp<-silhouette(km.out$cluster, dist(USArrests))
+sp<-silhouette(km.out$cluster, dist(scale(USArrests))) # dont forget scale
 plot(sp,col=1:2)
 
 # 2 Carry out a similar analysis to Exercise 1 using PAM to see if outliers were influencing the results. 
@@ -98,7 +98,7 @@ avesw.vec # cual tiene el largest mean silhouette width? todas son muy malas men
 
 
 
-#### con y sin escalar cual es el mejor????
+#### con y sin escalar cual es el mejor???? always scale before!!!
 # is recomended to scale the data before
 # pr.comp is used if the data has more than 4 dimensions
 
